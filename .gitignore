@@ -1,0 +1,40 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+dist-ssr/
+*.local
+
+# test / tooling output
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+*.tsbuildinfo
+
+# local configuration & secrets — never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.secrets
+
+# user-uploaded menu images must never be committed
+menu-uploads/
+uploads/
+private-menus/
+
+# editors / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# logs
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*

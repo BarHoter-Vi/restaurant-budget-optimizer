@@ -33,7 +33,12 @@ jobs:
           BASE_PATH: /${{ github.event.repository.name }}/
         run: npm run build
 
+      # enablement turns Pages on the first time this runs, so there is no
+      # manual settings step. Pages for a private repository needs a paid plan;
+      # on a free account the repository has to be public for this to succeed.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:

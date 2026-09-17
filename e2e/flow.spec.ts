@@ -3,7 +3,7 @@ import { SEEDED_MENU, seedSession, STORAGE_KEY } from './seed'
 
 test.describe('budget setup', () => {
   test('computes the total budget and the ceiling for food', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     await page.getByLabel('מספר סועדים').fill('4')
     await page.getByLabel('תקציב לאדם').fill('150')
     await page.getByLabel('אחוז טיפ').fill('12')
@@ -14,14 +14,14 @@ test.describe('budget setup', () => {
   })
 
   test('refuses to continue on invalid input and says why', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     await page.getByLabel('מספר סועדים').fill('0')
     await expect(page.getByRole('alert')).toContainText('מספר שלם')
     await expect(page.getByRole('button', { name: 'המשך לתפריט' })).toBeDisabled()
   })
 
   test('accepts a 0% tip', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     await page.getByLabel('תקציב לאדם').fill('100')
     await page.getByLabel('מספר סועדים').fill('2')
     await page.getByLabel('אחוז טיפ').fill('0')
@@ -34,7 +34,7 @@ test.describe('budget setup', () => {
 test.describe('choosing dishes', () => {
   test.beforeEach(async ({ page }) => {
     await seedSession(page)
-    await page.goto('/')
+    await page.goto('./')
   })
 
   test('updates every total the moment a dish is added', async ({ page }) => {
@@ -91,7 +91,7 @@ test.describe('choosing dishes', () => {
 test.describe('recommendations', () => {
   test.beforeEach(async ({ page }) => {
     await seedSession(page)
-    await page.goto('/')
+    await page.goto('./')
   })
 
   test('suggests a combination that stays inside the budget and adds it in one tap', async ({ page }) => {
@@ -117,7 +117,7 @@ test.describe('recommendations', () => {
 test.describe('session handling', () => {
   test('survives an accidental refresh', async ({ page }) => {
     await seedSession(page)
-    await page.goto('/')
+    await page.goto('./')
     await page.getByRole('button', { name: 'הוספת יחידה אחת של שניצל עוף' }).click()
     await expect(page.getByRole('region', { name: 'סיכום תקציב' })).toContainText('₪68.00')
 
@@ -129,7 +129,7 @@ test.describe('session handling', () => {
 
   test('start over asks first, then clears everything', async ({ page }) => {
     await seedSession(page)
-    await page.goto('/')
+    await page.goto('./')
     await page.getByRole('button', { name: 'הוספת יחידה אחת של שניצל עוף' }).click()
 
     await page.getByRole('button', { name: 'התחל מחדש' }).click()
@@ -146,7 +146,7 @@ test.describe('session handling', () => {
 
   test('keeps working with no network once loaded', async ({ page, context }) => {
     await seedSession(page)
-    await page.goto('/')
+    await page.goto('./')
     await context.setOffline(true)
 
     await expect(page.getByText('אין חיבור לאינטרנט')).toBeVisible()
@@ -160,7 +160,7 @@ test.describe('session handling', () => {
 test.describe('menu review', () => {
   test('edits an extracted item and recalculates a price already chosen', async ({ page }) => {
     await seedSession(page, { step: 'review', menu: { ...SEEDED_MENU.menu, confirmed: false } })
-    await page.goto('/')
+    await page.goto('./')
 
     await expect(page.getByRole('heading', { name: 'בדיקת התפריט' })).toBeVisible()
     await expect(page.getByText('צריך בדיקה').first()).toBeVisible()
@@ -178,7 +178,7 @@ test.describe('menu review', () => {
 test.describe('mobile layout and accessibility', () => {
   test('does not scroll horizontally', async ({ page }) => {
     await seedSession(page)
-    await page.goto('/')
+    await page.goto('./')
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
     )
@@ -186,14 +186,14 @@ test.describe('mobile layout and accessibility', () => {
   })
 
   test('every control on the budget screen has an accessible name', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     for (const name of ['מספר סועדים', 'תקציב לאדם', 'אחוז טיפ']) {
       await expect(page.getByLabel(name)).toBeVisible()
     }
   })
 
   test('the upload screen explains that photos stay on the device', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('./')
     await page.getByRole('button', { name: 'המשך לתפריט' }).click()
     await expect(page.getByText(/התמונות נשארות במכשיר שלכם/)).toBeVisible()
     await expect(page.getByRole('button', { name: 'צילום תפריט' })).toBeVisible()

@@ -1,5 +1,12 @@
 import { defineConfig, devices } from '@playwright/test'
 
+/**
+ * Point E2E_BASE_URL at a deployed build to run the same suite against it —
+ * used to verify the GitHub Pages deployment. Without it, the suite builds and
+ * serves the app locally.
+ */
+const deployedUrl = process.env.E2E_BASE_URL
+
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
@@ -8,7 +15,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['list']],
   use: {
-    baseURL: 'http://localhost:4173',
+    baseURL: deployedUrl ?? 'http://localhost:4173/',
     trace: 'on-first-retry',
   },
   /**
@@ -27,10 +34,12 @@ export default defineConfig({
       use: { ...devices['Galaxy S8'], browserName: 'chromium', channel: process.env.CI ? undefined : 'chrome' },
     },
   ],
-  webServer: {
-    command: 'BASE_PATH=/ npm run build && BASE_PATH=/ npm run preview -- --port 4173 --strictPort',
-    url: 'http://localhost:4173',
-    reuseExistingServer: !process.env.CI,
-    timeout: 180_000,
-  },
+  webServer: deployedUrl
+    ? undefined
+    : {
+        command: 'BASE_PATH=/ npm run build && BASE_PATH=/ npm run preview -- --port 4173 --strictPort',
+        url: 'http://localhost:4173',
+        reuseExistingServer: !process.env.CI,
+        timeout: 180_000,
+      },
 })

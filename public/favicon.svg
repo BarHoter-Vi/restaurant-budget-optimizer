@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="תקציב במסעדה">
+  <rect width="64" height="64" rx="14" fill="#2f6f5e"/>
+  <path d="M20 14v16a6 6 0 0 0 6 6v14a3 3 0 0 0 6 0V36a6 6 0 0 0 6-6V14" fill="none" stroke="#faf7f2" stroke-width="3.4" stroke-linecap="round"/>
+  <path d="M26 14v12M32 14v12" stroke="#faf7f2" stroke-width="3.4" stroke-linecap="round"/>
+  <path d="M46 14c-4 0-6 4-6 10s2 8 4 8v18a3 3 0 0 0 6 0V14z" fill="#faf7f2"/>
+</svg>

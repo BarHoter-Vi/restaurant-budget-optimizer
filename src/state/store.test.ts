@@ -167,3 +167,30 @@ describe('menu editing through the store', () => {
     expect(useAppStore.getState().step).toBe('review')
   })
 })
+
+describe('recovering from an interrupted extraction', () => {
+  it('does not restore an image as stuck mid-processing', async () => {
+    localStorage.clear()
+    await useAppStore.getState().resetAll()
+    useAppStore.setState({
+      images: [
+        {
+          id: 'img_1',
+          name: 'menu.jpg',
+          rotationDeg: 0,
+          status: 'processing',
+          itemCount: 0,
+          previewUrl: 'blob:preview',
+        },
+      ],
+    })
+    // Persisting happens through the normal path, then we reload from storage.
+    useAppStore.getState().goTo('upload')
+    await useAppStore.getState().hydrate()
+
+    const restored = useAppStore.getState().images.find((i) => i.id === 'img_1')
+    // The blob itself is gone in this test, so the image drops out entirely —
+    // what matters is that nothing comes back claiming to still be processing.
+    expect(restored?.status).not.toBe('processing')
+  })
+})

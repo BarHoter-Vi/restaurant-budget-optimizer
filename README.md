@@ -177,7 +177,9 @@ app needs a server.
   photographed-at-an-angle menus it will misread names and occasionally prices. The review screen is
   built to make fixing that quick, and nothing is ever confirmed automatically.
 - The first extraction downloads roughly 10–15 MB of language data and needs a connection once.
-  After that it is cached and works offline.
+  Tesseract caches it in IndexedDB afterwards and the service worker caches the WASM core, so a
+  later extraction should not re-download it — but OCR *without* a connection has not been verified
+  and is not a promise. Budget and menu selection offline are verified.
 - Very large menus stay responsive (rows use `content-visibility`), but extraction time grows with
   the number of photos; images are processed one at a time to keep memory use low on older phones.
 - Market-price and by-weight dishes can be ordered but are deliberately excluded from the budget

@@ -32,8 +32,9 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
-        // tesseract.js core + language data live on a public CDN. Cache them so the
-        // second OCR run works offline; the first one still needs a connection.
+        // tesseract.js core + language data live on a public CDN. Caching them
+        // means a repeat run does not re-download ~15MB; the first one still
+        // needs a connection.
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/.*/i,

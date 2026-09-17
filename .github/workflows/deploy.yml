@@ -16,6 +16,9 @@ concurrency:
 
 jobs:
   build:
+    # Pages cannot serve a private repository on a free plan, so skip rather
+    # than fail every push until the repository is made public.
+    if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

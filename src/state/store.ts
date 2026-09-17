@@ -132,7 +132,10 @@ export const useAppStore = create<AppState>((set, get) => ({
         .filter((image) => known.has(image.id))
         .map((image) => {
           const meta = saved.images.find((i) => i.id === image.id)!
-          return { ...meta, previewUrl: URL.createObjectURL(image.thumbnail) }
+          // A refresh mid-extraction would otherwise restore a frozen progress
+          // bar with no way out; back to pending, ready to be run again.
+          const status = meta.status === 'processing' ? 'pending' : meta.status
+          return { ...meta, status, previewUrl: URL.createObjectURL(image.thumbnail) }
         })
     } catch {
       images = []

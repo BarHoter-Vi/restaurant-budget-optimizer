@@ -228,7 +228,7 @@ async function readPriceColumn(
 export function describeOcrError(error: unknown): string {
   const raw = error instanceof Error ? error.message : String(error)
   if (/fetch|network|Failed to load|ERR_/i.test(raw)) {
-    return 'לא ניתן להוריד את קובצי השפה. בדקו חיבור לאינטרנט ונסו שוב — לאחר ההורדה הראשונה הזיהוי יעבוד גם ללא רשת.'
+    return 'לא ניתן להוריד את קובצי השפה. בדקו חיבור לאינטרנט ונסו שוב — הקבצים נשמרים במכשיר לאחר ההורדה הראשונה.'
   }
   if (/memory|Aborted|allocation/i.test(raw)) {
     return 'נגמר הזיכרון בזמן העיבוד. נסו תמונה אחת בכל פעם, או צלמו בנפרד חלקים מהתפריט.'
